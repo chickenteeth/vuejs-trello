@@ -1,6 +1,15 @@
 <template>
-  <div id="app" class="row">
-    <div v-bind:key="(list, index)" v-for="(list, index) in lists" class="col-3">
+  <draggable
+    v-model="lists"
+    :options="{ group: 'lists' }"
+    class="row dragArea"
+    @end="listMoved"
+  >
+    <div
+      v-bind:key="(list, index)"
+      v-for="(list, index) in lists"
+      class="col-3"
+    >
       <h5>{{ list.name }}</h5>
       <hr />
 
@@ -8,26 +17,43 @@
         v-bind:key="(card, index)"
         v-for="(card, index) in list.cards"
         class="card card-body mb-3"
-      >{{ card.name }}</div>
+      >
+        {{ card.name }}
+      </div>
 
       <div class="card card-body">
         <textarea v-model="messages[list.id]" class="form-control"></textarea>
-        <button v-on:click="submitMessages(list.id)" class="btn btn-secondary">Add</button>
+        <button v-on:click="submitMessages(list.id)" class="btn btn-secondary">
+          Add
+        </button>
       </div>
     </div>
-  </div>
+  </draggable>
 </template>
 
 <script>
+import draggable from "vuedraggable";
 export default {
+  components: { draggable },
   props: ["original_lists"],
   data: function() {
     return {
       messages: {},
-      lists: this.original_lists
+      lists: this.original_lists,
     };
   },
   methods: {
+    listMoved: function(event) {
+      var data = new FormData();
+      data.append("list[position]", event.newIndex + 1);
+
+      Rails.ajax({
+        url: `/lists/${this.lists[event.newIndex].id}/move`,
+        type: "PATCH",
+        data: data,
+        dataType: "json",
+      });
+    },
     submitMessages: function(list_id) {
       this.messages[list_id];
 
@@ -40,20 +66,19 @@ export default {
         type: "POST",
         data: data,
         dataType: "json",
-        success: data => {
-          const index = this.lists.findIndex(item => item.id == list_id);
+        success: (data) => {
+          const index = this.lists.findIndex((item) => item.id == list_id);
           this.lists[index].cards.push(data);
           this.messages[list_id] = undefined;
-        }
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
+.dragArea {
+  min-height: 20px;
 }
 </style>
