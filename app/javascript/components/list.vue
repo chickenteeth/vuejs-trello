@@ -1,7 +1,6 @@
 <template>
   <div class="list">
     <h5>{{ list.name }}</h5>
-    <hr />
 
     <draggable
       v-model="list.cards"
@@ -9,11 +8,7 @@
       class="dragArea"
       @change="cardMoved"
     >
-      <div
-        v-bind:key="(card, index)"
-        v-for="(card, index) in list.cards"
-        class="card card-body mb-3"
-      >{{ card.name }}</div>
+      <card v-bind:key="card" v-for="card in list.cards" :card="card" :list="list" />
     </draggable>
 
     <a v-if="!editing" v-on:click="startEditing">Add a card</a>
@@ -32,8 +27,9 @@
 
 <script>
 import draggable from "vuedraggable";
+import card from "components/card";
 export default {
-  components: { draggable },
+  components: { card, draggable },
   props: ["list"],
   data: function() {
     return {
@@ -87,6 +83,9 @@ export default {
           );
           window.store.lists[index].cards.push(data);
           this.message = "";
+          this.$nextTick(() => {
+            this.$refs.message.focus;
+          });
         }
       });
     }
@@ -97,14 +96,5 @@ export default {
 <style scoped>
 .dragArea {
   min-height: 20px;
-}
-.list {
-  background: #e2e4e6;
-  border-radius: 3px;
-  width: 270px;
-  margin-right: 20px;
-  padding: 10px;
-  display: inline-block;
-  vertical-align: top;
 }
 </style>
