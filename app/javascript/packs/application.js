@@ -7,6 +7,7 @@ require("jquery");
 import Vue from "vue/dist/vue.esm";
 import Vuex from "vuex";
 import App from "../app.vue";
+import "@fortawesome/fontawesome-free/js/all";
 
 Vue.use(Vuex);
 
