@@ -8,20 +8,20 @@
       class="dragArea"
       @change="cardMoved"
     >
-      <card v-bind:key="card" v-for="card in list.cards" :card="card" :list="list" />
+      <card v-for="card in list.cards" :key="card.id" :card="card" :list="list"></card>
     </draggable>
 
     <a v-if="!editing" v-on:click="startEditing">Add a card</a>
     <textarea
       v-if="editing"
-      v-model="message"
-      class="form-control"
       ref="message"
-      @keyup.enter="submitMessage"
+      v-model="message"
+      class="form-control mb-1"
+      @keyup.enter="createCard"
       @keyup.escape="editing = false"
     ></textarea>
-    <button v-if="editing" v-on:click="submitMessage" class="btn btn-secondary">Add</button>
-    <a v-if="editing" v-on:click="editing=false">Cancel</a>
+    <button v-if="editing" v-on:click="createCard" class="btn btn-secondary">Add</button>
+    <a v-if="editing" v-on:click="editing = false">Cancel</a>
   </div>
 </template>
 
@@ -46,18 +46,18 @@ export default {
     },
     cardMoved: function(event) {
       const evt = event.added || event.moved;
-      // if (evt.added == undefined) {
-      //   return;
-      // }
+      if (evt == undefined) {
+        return;
+      }
       const element = evt.element;
-      const list_index = window.store.lists.findIndex(list => {
+      const list_index = window.store.state.lists.findIndex(list => {
         return list.cards.find(card => {
           return card.id === element.id;
         });
       });
 
       var data = new FormData();
-      data.append("card[list_id]", window.store.lists[list_index].id);
+      data.append("card[list_id]", window.store.state.lists[list_index].id);
       data.append("card[position]", evt.newIndex + 1);
 
       Rails.ajax({
@@ -67,7 +67,7 @@ export default {
         dataType: "json"
       });
     },
-    submitMessage: function() {
+    createCard: function() {
       var data = new FormData();
       data.append("card[list_id]", this.list.id);
       data.append("card[name]", this.message);
@@ -78,13 +78,9 @@ export default {
         data: data,
         dataType: "json",
         success: data => {
-          const index = window.store.lists.findIndex(
-            item => item.id == this.list.id
-          );
-          window.store.lists[index].cards.push(data);
           this.message = "";
           this.$nextTick(() => {
-            this.$refs.message.focus;
+            this.$refs.message.focus();
           });
         }
       });
@@ -92,9 +88,5 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.dragArea {
-  min-height: 20px;
-}
-</style>
+.dragArea { min-height: 10px; }
+<style scoped></style>

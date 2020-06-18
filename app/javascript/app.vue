@@ -3,17 +3,17 @@
     <list v-bind:key="(list, index)" v-for="(list, index) in lists" :list="list" />
 
     <div class="list">
-      <a v-if="!editing" v-on:click="startEditing">Add a list</a>
+      <a v-if="!editing" v-on:click="startEditing">Add a List</a>
       <textarea
         v-if="editing"
-        v-model="message"
-        class="form-control"
         ref="message"
-        @keyup.enter="submitMessage"
+        v-model="message"
+        class="form-control mb-1"
+        @keyup.enter="createList"
         @keyup.escape="editing = false"
       ></textarea>
-      <button v-if="editing" v-on:click="submitMessage" class="btn btn-secondary">Add</button>
-      <a v-if="editing" v-on:click="editing=false">Cancel</a>
+      <button v-if="editing" v-on:click="createList" class="btn btn-secondary">Add</button>
+      <a v-if="editing" v-on:click="editing = false">Cancel</a>
     </div>
   </draggable>
 </template>
@@ -23,14 +23,21 @@ import draggable from "vuedraggable";
 import list from "./components/list";
 export default {
   components: { draggable, list },
-  props: ["original_lists"],
   data: function() {
     return {
-      messages: {},
-      lists: this.original_lists,
       editing: false,
       message: ""
     };
+  },
+  computed: {
+    lists: {
+      get() {
+        return this.$store.state.lists;
+      },
+      set(value) {
+        this.$store.state.lists = value;
+      }
+    }
   },
   methods: {
     startEditing: function() {
@@ -50,7 +57,7 @@ export default {
         dataType: "json"
       });
     },
-    submitMessage: function() {
+    createList: function() {
       var data = new FormData();
       data.append("list[name]", this.message);
 
@@ -60,7 +67,6 @@ export default {
         data: data,
         dataType: "json",
         success: data => {
-          window.store.lists.push(data);
           this.message = "";
           this.editing = false;
         }
@@ -74,6 +80,7 @@ export default {
 .dragArea {
   min-height: 20px;
 }
+
 .board {
   white-space: nowrap;
   overflow-x: auto;

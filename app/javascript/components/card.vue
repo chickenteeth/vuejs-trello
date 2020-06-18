@@ -14,7 +14,6 @@
             <input v-model="name" class="form-control" @keyup.enter="save" />
           </div>
           <div class="modal-footer d-flex">
-            <a class="mr-auto">Delete card</a>
             <button @click="save" type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
@@ -24,7 +23,7 @@
 </template>
 
 <script>
-// import draggable from "vuedraggable";
+import draggable from "vuedraggable";
 export default {
   props: ["card", "list"],
   data: function() {
@@ -49,13 +48,6 @@ export default {
         data: data,
         dataType: "json",
         success: data => {
-          const list_index = window.store.lists.findIndex(
-            item => item.id === this.list.id
-          );
-          const card_index = window.store.lists.findIndex(
-            item => item.id === this.card.id
-          );
-          window.store.lists[list_index].cards.splice(card_index, 1, data);
           this.editing = false;
         }
       });
@@ -64,5 +56,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style scoped></style>

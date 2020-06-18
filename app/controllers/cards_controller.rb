@@ -1,5 +1,6 @@
 class CardsController < ApplicationController
   before_action :set_card, only: [:show, :edit, :update, :destroy, :move]
+  access all: [:show, :index], user: {except: [:destroy, :new, :create, :edit, :update]}, site_admin: :all, message: "Login to the that"
 
   # GET /cards
   # GET /cards.json
@@ -28,6 +29,9 @@ class CardsController < ApplicationController
 
     respond_to do |format|
       if @card.save
+
+        ActionCable.server.broadcast "board", { commit: 'addCard', payload: render_to_string(:show, formats: [:json]) }
+        
         format.html { redirect_to @card, notice: 'Card was successfully created.' }
         format.json { render :show, status: :created, location: @card }
       else
@@ -42,6 +46,9 @@ class CardsController < ApplicationController
   def update
     respond_to do |format|
       if @card.update(card_params)
+
+        ActionCable.server.broadcast "board", { commit: 'editCard', payload: render_to_string(:show, formats: [:json]) }
+
         format.html { redirect_to @card, notice: 'Card was successfully updated.' }
         format.json { render :show, status: :ok, location: @card }
       else

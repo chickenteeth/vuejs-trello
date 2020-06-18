@@ -1,5 +1,6 @@
 class ListsController < ApplicationController
   before_action :set_list, only: [:show, :edit, :update, :destroy, :move]
+  access all: [:show, :index], user: {except: [:destroy, :new, :create, :edit, :update]}, site_admin: :all, message: "Login to the that"
 
   # GET /lists
   # GET /lists.json
@@ -28,6 +29,9 @@ class ListsController < ApplicationController
 
     respond_to do |format|
       if @list.save
+
+        ActionCable.server.broadcast "board", { commit: 'addList', payload: render_to_string(:show, formats: [:json]) }
+        
         format.html { redirect_to @list, notice: 'List was successfully created.' }
         format.json { render :show, status: :created, location: @list }
       else
