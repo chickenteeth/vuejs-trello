@@ -1,24 +1,15 @@
-# README
+# VueTrello
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This app is a small clone of the Trello web application with the ability to drag, drop, add, delete and edit lists and cards (editing lists not functioning yet).  You must be logged in to add or edit data
 
-Things you may want to cover:
+Demo user:
+demo@demo.com
+demo
 
-* Ruby version
+Technologies Used:
 
-* System dependencies
+* Ruby 2.7
 
-* Configuration
+* Raisl 6.0.3
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* VueJS 2.6
