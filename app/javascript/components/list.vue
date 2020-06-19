@@ -115,5 +115,9 @@ export default {
   }
 };
 </script>
-.dragArea { min-height: 10px; }
-<style scoped></style>
+
+<style scoped>
+.dragArea {
+  min-height: 10px;
+}
+</style>
