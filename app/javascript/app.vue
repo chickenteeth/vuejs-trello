@@ -67,6 +67,7 @@ export default {
         data: data,
         dataType: "json",
         success: data => {
+          this.$store.commit("addList", data);
           this.message = "";
           this.editing = false;
         }
@@ -84,7 +85,6 @@ export default {
 .board {
   white-space: nowrap;
   overflow-x: auto;
-  min-height: 500px;
 }
 .list {
   background: #e2e4e6;
