@@ -34,10 +34,7 @@ window.store = new Vuex.Store({
       state.lists[list_index].cards.splice(card_index, 1, data);
     },
     editList(state, data) {
-      const list_index = state.lists.findIndex(
-        (item) => item.id == data.list_id
-      );
-      state.lists[list_index].splice(list_index, 1, data);
+      state.lists.push(data);
     }
   },
 });

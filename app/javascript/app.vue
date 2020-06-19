@@ -73,6 +73,7 @@ export default {
         }
       });
     }
+    // New method here
   }
 };
 </script>

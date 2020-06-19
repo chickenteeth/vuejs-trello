@@ -1,7 +1,9 @@
 <template>
   <div class="list">
     <span class="d-flex">
-      <h5>{{ list.name }}</h5>
+      <h5>
+        <a @click="editing = true">{{ list.name }}</a>
+      </h5>
 
       <span class="dropdown ml-auto">
         <i
@@ -13,7 +15,7 @@
           aria-expanded="false"
         ></i>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">Edit Name</a>
+          <a class="dropdown-item disabled" href="#">Edit Name</a>
           <a @click="remove" class="dropdown-item">Delete List</a>
         </div>
       </span>
