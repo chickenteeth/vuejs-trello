@@ -1,17 +1,16 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <%= link_to "VueTrello", root_path, class: 'navbar-brand' %>
-  <a href="https://github.com/chickenteeth/vuejs-trello" target="_blank" class="ghlink"><span class="fab fa-github"></span></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a href="https://github.com/chickenteeth/vuejs-trello" target="_blank" class="nav-link" href="#">Github <i class="fab fa-github"></i></a>
       </li>
-    </ul>
-    <ul class="navbar-nav ml-auto">
-      <%= login_helper 'nav-link' %>
+      <li class="nav-item">
+        <%= login_helper 'nav-link' %>
+      </li>
     </ul>
   </div>
 </nav>

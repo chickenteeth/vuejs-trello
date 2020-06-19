@@ -1,6 +1,23 @@
 <template>
   <div class="list">
-    <h5>{{ list.name }}</h5>
+    <span class="d-flex">
+      <h5>{{ list.name }}</h5>
+
+      <span class="dropdown ml-auto">
+        <i
+          class="fas fa-ellipsis-h dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        ></i>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">Edit Name</a>
+          <a @click="remove" class="dropdown-item">Delete List</a>
+        </div>
+      </span>
+    </span>
 
     <draggable
       v-model="list.cards"
@@ -83,6 +100,15 @@ export default {
           this.$nextTick(() => {
             this.$refs.message.focus();
           });
+        }
+      });
+    },
+    remove: function() {
+      Rails.ajax({
+        url: `/lists/${this.list.id}`,
+        type: "DELETE",
+        success: function() {
+          return;
         }
       });
     }

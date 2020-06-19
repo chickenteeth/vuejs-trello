@@ -14,6 +14,7 @@
             <input v-model="name" class="form-control" @keyup.enter="save" />
           </div>
           <div class="modal-footer d-flex">
+            <a @click="remove" class="mr-auto">Delete Card</a>
             <button @click="save" type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
@@ -50,6 +51,15 @@ export default {
         success: data => {
           this.$store.commit("editCard", data);
           this.editing = false;
+        }
+      });
+    },
+    remove: function() {
+      Rails.ajax({
+        url: `/cards/${this.card.id}`,
+        type: "DELETE",
+        success: function() {
+          return;
         }
       });
     }
