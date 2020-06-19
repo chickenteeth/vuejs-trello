@@ -85,6 +85,7 @@ export default {
 .board {
   white-space: nowrap;
   overflow-x: auto;
+  min-height: 500px;
 }
 .list {
   background: #e2e4e6;
